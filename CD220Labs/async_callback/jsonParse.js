@@ -4,7 +4,7 @@ const req = axios.get("https://raw.githubusercontent.com/ibm-developer-skills-ne
 console.log(req);
 req.then(resp => {
     let courseDetails = resp.data;
-    console.log(courseDetails)
+    console.log(JSON.stringify(courseDetails,null,4))
 })
 .catch(err => {
     console.log("Rejected")
