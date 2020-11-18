@@ -1,0 +1,11 @@
+const axios = require('axios').default;
+
+const req = axios.get("https://raw.githubusercontent.com/ibm-developer-skills-network/lkpho-Cloud-applications-with-Node.js-and-React/master/CD220Labs/async_callback/courseDetails.json");
+console.log(req);
+req.then(resp => {
+    let courseDetails = resp.data;
+    console.log(courseDetails)
+})
+.catch(err => {
+    console.log("Rejected")
+});
