@@ -7,5 +7,6 @@ req.then(resp => {
     console.log(JSON.stringify(courseDetails,null,4))
 })
 .catch(err => {
-    console.log("Rejected")
+    console.log(err.toString())
+    //This will console log the error withe the code. eg. Error: Request failed with status code 404
 });
