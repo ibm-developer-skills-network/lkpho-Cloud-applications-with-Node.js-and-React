@@ -5,7 +5,7 @@ var prompt = require('prompt-sync')();
 var filename = prompt('What is the name of the file ?');
 
 var filename1 = "courseDetails.json"
-var filename2 = "sampleDate.json"
+var filename2 = "sampleData.json"
 
 function readFile1(filename1) {
  // Reading the file Synchronously - Blocking rest of execution
