@@ -4,11 +4,10 @@ const app = new express();
 app.use(function (req, res, next) {
     if (req.query.password !== "pwd123") {
         return res.status(402).send("This user cannot login ");    
-        res.
     }
     console.log('Time:', Date.now())
     next()
-  })
+  });
 
 app.get("/", (req,res) => {
     return res.send("Hello World!");
@@ -16,5 +15,5 @@ app.get("/", (req,res) => {
 
 app.listen(3333, () => {
     console.log(`listening at http://localhost:3333`)
-})
+});
 
