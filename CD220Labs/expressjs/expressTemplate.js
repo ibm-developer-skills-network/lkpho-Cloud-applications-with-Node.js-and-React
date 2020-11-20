@@ -7,7 +7,7 @@ const jsxEngine = expressReactViews.createEngine();
 
 app.set('view engine', 'jsx');
 
-app.set('views', 'myviews');
+app.set('views', 'myview');
 
 app.engine('jsx',jsxEngine);
 
