@@ -52,8 +52,8 @@ app.use("/auth", function auth(req,res,next){
 });
 
 app.post("/login", (req,res) => {
-  const username = req.body.username;
-  const password = req.body.password;
+  const username = req.query.username;
+  const password = req.query.password;
 
   if (!username || !password) {
       return res.status(404).json({message: "Error logging in"});
@@ -74,8 +74,8 @@ app.post("/login", (req,res) => {
 });
 
 app.post("/register", (req,res) => {
-  const username = req.body.username;
-  const password = req.body.password;
+  const username = req.query.username;
+  const password = req.query.password;
 
   if (username && password) {
     if (!doesExist(username)) { 
