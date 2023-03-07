@@ -1,8 +1,8 @@
 // Requiring fs module - fs is used for File I/O
-var fs = require('fs');
+let fs = require('fs');
 
-var filename1 = "courseDetails.json"
-var filename2 = "sampleData.json"
+let filename1 = "courseDetails.json"
+let filename2 = "sampleData.json"
 
 // Reading the file Asynchronously - Not blocking rest of execution
 function readFile1(filename1) {
