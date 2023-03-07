@@ -1,8 +1,8 @@
 const express = require('express');
 const app = new express();
 
-var userRouter = express.Router()
-var itemRouter = express.Router()
+let userRouter = express.Router()
+let itemRouter = express.Router()
 
 userRouter.use(function (req, res, next) {
     console.log('User query Time:', Date());
