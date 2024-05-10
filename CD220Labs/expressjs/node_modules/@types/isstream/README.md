@@ -1,0 +1,16 @@
+# Installation
+> `npm install --save @types/isstream`
+
+# Summary
+This package contains type definitions for isstream (https://github.com/rvagg/isstream).
+
+# Details
+Files were exported from https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/isstream
+
+Additional Details
+ * Last updated: Thu, 26 Sep 2019 23:06:55 GMT
+ * Dependencies: none
+ * Global values: none
+
+# Credits
+These definitions were written by Matthew Peveler <https://github.com/MasterOdin>.
