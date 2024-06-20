@@ -1,97 +1,93 @@
+ // Importing required modules: Express.js, JSON Web Token (JWT), and Express session
 const express = require('express');
 const jwt = require('jsonwebtoken');
-const session = require('express-session')
+const session = require('express-session');
 
-let users = []
+let users = [];
 
-//Function to check if the user exists
-const doesExist = (username)=>{
-  let userswithsamename = users.filter((user)=>{
-    return user.username === username
+// Function to check if the user exists
+const doesExist = (username) => {
+  let userswithsamename = users.filter((user) => {
+    return user.username === username;
   });
-  if(userswithsamename.length > 0){
-    return true;
-  } else {
-    return false;
-  }
-}
+  return userswithsamename.length > 0;
+};
 
-//Function to check if the user is authenticated
-const authenticatedUser = (username,password)=>{
-  let validusers = users.filter((user)=>{
-    return (user.username === username && user.password === password)
+// Function to check if the user is authenticated
+const authenticatedUser = (username, password) => {
+  let validusers = users.filter((user) => {
+    return user.username === username && user.password === password;
   });
-  if(validusers.length > 0){
-    return true;
-  } else {
-    return false;
-  }
-}
+  return validusers.length > 0;
+};
 
 const app = express();
 
-app.use(express.json());
+app.use(express.json()); // Middleware to parse JSON request bodies
 
-app.use(session({secret:"fingerpint"}))
+app.use(session({ secret: "fingerpint" })); // Middleware to handle sessions
 
-app.use("/auth", function auth(req,res,next){
-   if(req.session.authorization) { //get the authorization object stored in the session
-       token = req.session.authorization['accessToken']; //retrieve the token from authorization object
-       jwt.verify(token, "access",(err,user)=>{ //Use JWT to verify token
-           if(!err){
-               req.user = user;
-               next();
-           }
-           else{
-               return res.status(403).json({message: "User not authenticated"})
-           }
-        });
-    } else {
-        return res.status(403).json({message: "User not logged in"})
-    }
+// Middleware to authenticate users using JWT
+app.use("/auth", function auth(req, res, next) {
+  if (req.session.authorization) { // Get the authorization object stored in the session
+    token = req.session.authorization['accessToken']; // Retrieve the token from authorization object
+    jwt.verify(token, "access", (err, user) => { // Use JWT to verify token
+      if (!err) {
+        req.user = user;
+        next();
+      } else {
+        return res.status(403).json({ message: "User not authenticated" });
+      }
+    });
+  } else {
+    return res.status(403).json({ message: "User not logged in" });
+  }
 });
 
-app.post("/login", (req,res) => {
-  const username = req.query.username;
-  const password = req.query.password;
+// Route to handle user login
+app.post("/login", (req, res) => {
+  const username = req.body.username;
+  const password = req.body.password;
 
   if (!username || !password) {
-      return res.status(404).json({message: "Error logging in"});
+    return res.status(404).json({ message: "Error logging in" });
   }
 
-  if (authenticatedUser(username,password)) {
+  if (authenticatedUser(username, password)) {
     let accessToken = jwt.sign({
       data: password
     }, 'access', { expiresIn: 60 * 60 });
 
     req.session.authorization = {
-      accessToken,username
-  }
-  return res.status(200).send("User successfully logged in");
+      accessToken, username
+    };
+    return res.status(200).send("User successfully logged in");
   } else {
-    return res.status(208).json({message: "Invalid Login. Check username and password"});
+    return res.status(208).json({ message: "Invalid Login. Check username and password" });
   }
 });
 
-app.post("/register", (req,res) => {
-  const username = req.query.username;
-  const password = req.query.password;
+// Route to handle user registration
+app.post("/register", (req, res) => {
+  const username = req.body.username;
+  const password = req.body.password;
 
   if (username && password) {
-    if (!doesExist(username)) { 
-      users.push({"username":username,"password":password});
-      return res.status(200).json({message: "User successfully registred. Now you can login"});
+    if (!doesExist(username)) {
+      users.push({ "username": username, "password": password });
+      return res.status(200).json({ message: "User successfully registered. Now you can login" });
     } else {
-      return res.status(404).json({message: "User already exists!"});    
+      return res.status(404).json({ message: "User already exists!" });
     }
-  } 
-  return res.status(404).json({message: "Unable to register user."});
+  }
+  return res.status(404).json({ message: "Unable to register user." });
 });
 
-app.get("/auth/get_message", (req,res) => {
-  return res.status(200).json({message: "Hello, You are an authenticated user. Congratulations!"});
-})
+// Main endpoint to be accessed by authenticated users
+app.get("/auth/get_message", (req, res) => {
+  return res.status(200).json({ message: "Hello, You are an authenticated user. Congratulations!" });
+});
 
-const PORT =5000;
+const PORT = 5000; // Define the port number
 
-app.listen(PORT,()=>console.log("Server is running"));
+app.listen(PORT, () => console.log("Server is running")); // Start the server and listen on the specified port
